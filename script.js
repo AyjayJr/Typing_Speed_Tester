@@ -1,16 +1,19 @@
+// Global constants
 const testWrapper = document.querySelector(".test-wrapper");
 const testArea = document.querySelector("#test-area");
 const originText = document.querySelector("#origin-text p").innerHTML;
 const resetButton = document.querySelector("#reset");
 const theTimer = document.querySelector(".timer");
 
+// Global variables
 var timer = [0,0,0,0]
+var interval;
+var timerRunning = false;
 // Add leading zero to numbers 9 or below (purely for aesthetics):
 function leadingZero(time) {
   if (time <= 9) {
     time = "0" + time;
   }
-
   return time;
 }
 
@@ -26,22 +29,32 @@ function runTimer() {
 }
 
 // Match the text entered with the provided text on the page:
+function spellcheck() {
+  let textEntered = testArea.value;
+  let originTextMatch = originText.substring(0, textEntered.length);
 
+  if (textEntered == originText) {
+    clearInterval(interval);
+    testWrapper.style.borderColor = "#429890";
+  } else {
+      if (textEntered == originTextMatch) {
+        testWrapper.style.borderColor = "#65ccf3";
+      } else {
+        testWrapper.style.borderColor = "#e95d0f";
+      }
+  }
+}
 
 // Start the timer:
 function start() {
   let = textEnteredLength = testArea.value.length;
 
-  if(textEnteredLength === 0) {
-    setInterval(runTimer, 10);
+  if(textEnteredLength === 0 && !timerRunning) {
+    timerRunning = true;
+    interval = setInterval(runTimer, 10);
   }
 
   console.log(textEnteredLength);
-}
-
-function spellcheck() {
-  let textEntered = testArea.value;
-  console.log(textEntered);
 }
 
 // Reset everything:
